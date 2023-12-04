@@ -1,6 +1,7 @@
 import requests, json, os
 from dotenv import load_dotenv
 import pandas as pd
+from math import radians, cos, sin, sqrt, atan2
 
 
 def get_location(address):
@@ -31,3 +32,26 @@ def get_location(address):
         response_data.append(school_data)
 
     return response_data
+
+
+def calculate_distance(lat1, lon1, lat2, lon2):
+    # Radius of the Earth in km
+    R = 6371.0
+
+    # Coordinates in radians
+    lat1_rad = radians(lat1)
+    lon1_rad = radians(lon1)
+    lat2_rad = radians(lat2)
+    lon2_rad = radians(lon2)
+
+    # Differences in coordinates
+    dlon = lon2_rad - lon1_rad
+    dlat = lat2_rad - lat1_rad
+
+    # Haversine formula
+    a = sin(dlat / 2) ** 2 + cos(lat1_rad) * cos(lat2_rad) * sin(dlon / 2) ** 2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    # Distance in kilometers
+    distance = R * c
+    return distance
