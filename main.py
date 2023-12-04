@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from utils import get_location
+from utils import get_location, get_schools
 
 app = FastAPI()
 
@@ -17,3 +17,8 @@ async def say_hello(name: str):
 @app.get("/data/{location}")
 async def data_test(location: str):
     return get_location(location)
+
+
+@app.get("/calc")
+async def data_test(lat: float, lng: float):
+    return get_schools(lat, lng)

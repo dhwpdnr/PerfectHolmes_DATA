@@ -2,9 +2,10 @@ import requests, json, os
 from dotenv import load_dotenv
 import pandas as pd
 from math import radians, cos, sin, sqrt, atan2
+from haversine import haversine
 
 
-def get_location(address):
+def get_location():
     load_dotenv(verbose=True)
     KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
     headers = {"Authorization": f"KakaoAK {KAKAO_API_KEY}"}
@@ -27,8 +28,8 @@ def get_location(address):
 
         school_data["name"] = item[1]
         school_data["address"] = item[4]
-        school_data["lat"] = api_json['documents'][0]['address']['x']
-        school_data["lng"] = api_json['documents'][0]['address']['y']
+        school_data["lng"] = api_json['documents'][0]['address']['x']
+        school_data["lat"] = api_json['documents'][0]['address']['y']
         response_data.append(school_data)
 
     return response_data
@@ -55,3 +56,17 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     # Distance in kilometers
     distance = R * c
     return distance
+
+
+def get_schools(lat, lng):
+    school_data = get_location()
+    kindergartens_within_3km = []
+    current_location = (lat, lng)  # Latitude, Longitude
+
+    for school in school_data:
+        # distance = calculate_distance(lat, lng, )
+        target_location = (float(school['lat']), float(school['lng']))
+        distance = haversine(current_location, target_location, unit='km')
+        if distance <= 1:
+            kindergartens_within_3km.append(school)
+    return kindergartens_within_3km
