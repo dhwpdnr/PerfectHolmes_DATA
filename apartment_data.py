@@ -3,8 +3,8 @@ import pandas as pd
 # data/current_apartment.csv 읽고 데이터 확인하기
 current_apartment = pd.read_csv('data/current_apartment.csv', encoding='cp949')
 actual_transaction = pd.read_csv('data/actual_transaction.csv', encoding='cp949')
-print(current_apartment.head())
-print(actual_transaction.head())
+# print(current_apartment.head())
+# print(actual_transaction.head())
 
 current_apartment_col = current_apartment.columns
 actual_transaction_col = actual_transaction.columns
@@ -24,7 +24,18 @@ for item in current_apartment.itertuples():
 
 from pprint import pprint
 
-pprint(apartment_list)
+# pprint(apartment_list)
+
+actual_transaction_col_list = actual_transaction.iloc[5]
+
+# for item in actual_transaction_col_list:
+#     print(item)
+#
+# print(actual_transaction_col_list[1])
+
+for item in actual_transaction.iloc[6:].itertuples():
+    for i in range(len(item)):
+        print(actual_transaction_col_list[i], item[i+1])
 
 # apartment_list 를 data 폴더에 저장하기
 import json
